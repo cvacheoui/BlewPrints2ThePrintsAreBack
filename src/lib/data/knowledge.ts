@@ -28,6 +28,10 @@ export class KnowledgeInstance {
 	get comments() {
 		return this.data.comments;
 	}
+	// Content tags come from the sheet's "Content Tags" column, parsed into a Set of plain labels.
+	get contentTags(): Set<string> {
+		return this.data.contentTags;
+	}
 	get image() {
 		return `/images/knowledge/${this.id}.webp`;
 	}
@@ -60,9 +64,22 @@ Objects.know = new ExcelSchema<KnowledgeInstance>(
 		{ key: 'pageNum', type: Number },
 		{ key: 'parsedText', type: String },
 		{ key: 'magnifierParsedText', type: String },
-		{ key: 'comments', type: String }
+		{ key: 'comments', type: String },
+		// `coverage` (CSV column 9) is unused for now, but the parser maps fields by column
+		// position (see lib/parse.ts), so it must be listed to keep `contentTags` aligned to column 10.
+		{ key: 'coverage', type: String },
+		// `contentTags`: plain comma-separated labels from the "Content Tags" column. Trim, drop
+		// blanks, and de-duplicate into a Set so filtering can do fast membership checks.
+		{
+			key: 'contentTags',
+			type: (s: string) =>
+				new Set(
+					s
+						.split(',')
+						.map((t) => t.trim())
+						.filter(Boolean)
+				)
+		}
 	],
 	KnowledgeInstance
 );
-
-console.log(Objects.know);

@@ -9,6 +9,11 @@ export interface SidebarItem {
 
 export default [
 	{
+		id: 'g',
+		title: 'Content Tags',
+		route: '/tags'
+	},
+	{
 		id: 'r',
 		title: 'Rooms',
 		route: '/room',

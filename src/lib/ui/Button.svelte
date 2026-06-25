@@ -190,6 +190,9 @@
 
 	.Button[data-type='OUTLINE'] {
 		border: 1px solid;
+		/* Without this the native <button> background (light grey) shows through, making the
+		   white label text illegible. Outline buttons should be transparent over the dark page. */
+		background-color: transparent;
 	}
 	.Button[data-type='NONE'][data-variant='PRIMARY'],
 	.Button[data-type='OUTLINE'][data-variant='PRIMARY'] {
